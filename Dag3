@@ -1,0 +1,41 @@
+function containsP(pts, rect) {
+  //rect = fixRect(rect);
+  let n = pts.length
+  var a = rect[0]
+  var b = rect[1]
+  var c = rect[2]
+  var d = rect[3]
+  let areal_4 = 0;
+  areal_4 += area(a, b, c);
+  areal_4 += area(b, c, d);
+  var inside = []
+  var p;
+  for (let i=0; i<n; i++) {
+    p = pts[i]
+    let areal = 0;
+    areal += area(a,p,d)
+    areal += area(d,p,c)
+    areal += area(b,p,c)
+    areal += area(p,b,a)
+    if (areal > areal_4) {
+      inside.push(false)
+    } else {
+      inside.push(true)
+    }
+ }
+  return inside
+}
+ 
+function area(a, b, c) {
+  let area = 0.0;
+  let j = 2;
+  let X = [a[0], b[0], c[0]]
+  let Y= [a[1], b[1], c[1]]
+  for (let i=0; i < 3; i++) {
+     area += (X[j] + X[i]) * (Y[j] - Y[i]);
+    j=i
+  }
+  return Math.abs(area / 2.0)
+}
+    
+}
