@@ -1,0 +1,64 @@
+function antallTurer(islands, n) {
+  dict = {}
+  for (let i=0; i<islands.length; i++) {
+    island = i+1
+    if (dict[island] === undefined) {
+      dict[island] = island
+    }
+    for (let j=0; j<islands[i].length; j++) {
+      if (dict[islands[i][j]] === undefined) {
+        dict[islands[i][j]] = islands[i][j]
+      }
+      if (get_parent(dict, islands[i][j]) < get_parent(dict, island)) {
+        fuse(dict, islands[i][j], island)
+      } else {
+        fuse(dict, island, islands[i][j])
+      }
+    }
+  }
+  for (var key in dict) {
+    get_parent(dict, key)
+  }
+  start_lst = []
+  heli_lst = {}
+  for (var key in dict) {
+    if (dict[key] === 1) {
+      start_lst.push(key)
+    } else {
+       if (heli_lst[dict[key]] === undefined) {
+         heli_lst[dict[key]] = [key]
+       } else {
+         heli_lst[dict[key]].push(key);
+       }
+    }
+  }
+  lst = []
+  for (key in heli_lst) {
+    lst.push(heli_lst[key])
+  }
+  lst.sort(function (a, b) {
+  return b.length - a.length;
+  });
+  var sum = start_lst.length
+  var jumps = 0
+  while (sum < n) {
+    if(jumps < lst.length) {
+      sum += lst[jumps].length
+    } else {
+      sum++
+    }
+    jumps++
+  }
+  return jumps
+}
+
+function get_parent(dict, num) {
+  if (dict[num] !== num) {
+    dict[num] = get_parent(dict, dict[num])
+  }
+  return dict[num]
+}
+
+function fuse(dict, num1, num2){
+  dict[get_parent(dict,num2)] = get_parent(dict, num1) 
+}
