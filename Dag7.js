@@ -1,0 +1,1 @@
+ingenTall(){return '޹'.charCodeAt()}
